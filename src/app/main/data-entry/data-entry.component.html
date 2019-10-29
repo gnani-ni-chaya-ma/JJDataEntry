@@ -1,0 +1,127 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card>
+    <div class="logo">
+      <img src="assets/logo.png" alt="AnandNagariJJ112-Logo" width="80px;">
+    </div>
+    <mat-card-title>JJ-112 Data-entry</mat-card-title>
+    <mat-card-subtitle>enter details and SAVE</mat-card-subtitle>
+
+    <mat-card-content>
+      <form fxLayout="column" [formGroup]="dataEntryForm" (ngSubmit)="submit()" autocomplete="off" novalidate>
+
+        <!-- NAME -->
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Enter name" autofocus formControlName="name" required>
+          <mat-error *ngIf="f.name.errors?.required">Name is required</mat-error>
+          <mat-icon matSuffix>account_circle</mat-icon>
+        </mat-form-field>
+        <!-- / NAME -->
+
+        <!-- AGE -->
+        <mat-form-field appearance="outline">
+          <mat-label>Age</mat-label>
+          <input matInput placeholder="Enter age" formControlName="age" required>
+          <mat-error *ngIf="f.age.errors?.required">Age is required</mat-error>
+          <mat-error *ngIf="f.age.errors?.pattern">Age is invalid</mat-error>
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+        <!-- / AGE -->
+
+        <!-- GENDER -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-label style="font-weight: bold; margin-right: 16px;">Gender</mat-label>
+          <mat-radio-group aria-label="Select an option" formControlName="gender">
+            <mat-radio-button value="Male" style="margin-right: 16px;">Male</mat-radio-button>
+            <mat-radio-button value="Female">Female</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <!-- / GENDER -->
+
+        <br>
+
+        <!-- MOBILE -->
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile</mat-label>
+          <span matPrefix>+91 &nbsp;</span>
+          <input matInput type="tel" placeholder="Enter mobile" formControlName="mobile">
+          <!-- <mat-error *ngIf="f.mobile.errors?.required">Mobile is required</mat-error> -->
+          <mat-error *ngIf="f.mobile.errors?.pattern">Mobile is Invalid</mat-error>
+          <mat-icon matSuffix>call</mat-icon>
+        </mat-form-field>
+        <!-- / MOBILE -->
+
+        <!-- E-MAIL -->
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Enter email" autofocus formControlName="email">
+          <!-- <mat-error *ngIf="f.email.errors?.required">Email is required</mat-error> -->
+          <mat-error *ngIf="f.email.errors?.email">Invalid email</mat-error>
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+        <!-- / E-MAIL -->
+
+        <!-- COUNTRY -->
+        <mat-form-field appearance="outline">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="country" name="country" (selectionChange)="onChangeCountry($event)" required>
+            <mat-option *ngFor="let country of countries" [value]="country">
+              {{country}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="f.country.errors?.required">Country is required</mat-error>
+          <mat-icon matSuffix>emoji_flags</mat-icon>
+        </mat-form-field>
+        <!-- / COUNTRY -->
+
+        <!-- OTHER-COUNTRY -->
+        <mat-form-field appearance="outline" *ngIf="f.country.value === 'Rest of India'">
+          <mat-label>Other country</mat-label>
+          <input matInput placeholder="Enter other country" formControlName="other_country" required>
+          <mat-error *ngIf="f.other_country.errors?.required">Other country is required</mat-error>
+          <mat-icon matSuffix>emoji_flags</mat-icon>
+        </mat-form-field>
+        <!-- / OTHER-COUNTRY -->
+
+        <!-- CENTER -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-label style="font-weight: bold; margin-right: 16px;">Center</mat-label>
+          <div class="auto-grow">
+            <ng-select matInput [items]="centers" bindLabel="value" bindValue="value" placeholder="Select center"
+              formControlName="city" (change)="onCitySelect($event)" [disabled]="f.country.value === 'Rest of India'"
+              required>
+            </ng-select>
+            <mat-error class="error" *ngIf="f.city.touched && f.city.errors">Center is required</mat-error>
+          </div>
+        </div>
+        <!-- / CENTER -->
+
+        <br>
+
+        <!-- OTHER-CITY -->
+        <mat-form-field appearance="outline" *ngIf="f.city?.value === 'Rest of India'">
+          <mat-label>Other city</mat-label>
+          <input matInput placeholder="Enter other city" formControlName="other_city" required>
+          <mat-error *ngIf="f.other_city.errors?.required">Other city is required</mat-error>
+          <mat-icon matSuffix>location_city</mat-icon>
+        </mat-form-field>
+        <!-- / OTHER-CITY -->
+
+        <!-- EDUCATION-AFFLIATION -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-checkbox formControlName="education_affiliation">Education Affliation ?</mat-checkbox>
+        </div>
+        <!-- / EDUCATION-AFFLIATION -->
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <button mat-flat-button color="warn" type="reset" (click)="reset()">Reset</button>
+        <button mat-flat-button color="primary" [disabled]="dataEntryForm.invalid" type="submit"
+          (click)="submit()">Save</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

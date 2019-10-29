@@ -1,0 +1,31 @@
+<div #login class="container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card>
+    <div fxLayoutAlign="center center" class="logo">
+      <img src="assets/logo.png" alt="AnandNagariJJ112-Logo" width="100px;">
+    </div>
+    <mat-card-title fxLayoutAlign="center center">Sign in</mat-card-title>
+    <mat-card-subtitle fxLayoutAlign="center center">to Continue JJ-112 Data-entry</mat-card-subtitle>
+
+    <mat-card-content>
+      <form fxLayout="column" [formGroup]="loginForm" (ngSubmit)="submit()" autocomplete="off"
+        novalidate>
+
+        <!-- PASSWORD -->
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput placeholder="Enter password" formControlName="password" autofocus required>
+          <mat-error *ngIf="f.password.errors?.required">Password is required</mat-error>
+          <mat-icon matSuffix>security</mat-icon>
+        </mat-form-field>
+        <!-- / PASSWORD -->
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button mat-flat-button color="primary" type="submit" (click)="submit()">Login</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
