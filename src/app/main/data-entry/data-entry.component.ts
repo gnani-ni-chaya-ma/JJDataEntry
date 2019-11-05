@@ -19,6 +19,7 @@ export class DataEntryComponent implements OnInit {
   dataEntryForm: FormGroup;
   countries: string[] = ["Rest of India"];
   centers: any[] = [];
+  subcenters: any[] = [];
   centerData: any;
 
   constructor(
@@ -32,14 +33,15 @@ export class DataEntryComponent implements OnInit {
     this.dataEntryForm = this._formBuilder.group({
       name: [null, Validators.required],
       age: [null, [Validators.required, Validators.pattern(/^[0-9]{1,2}[:.,-]?$/)]],
-      gender: [null, Validators.required],
+      gender: ['Male', Validators.required],
       mobile: [null, [Validators.pattern(/^[6-9]\d{9}$/)]],
       email: [null, [Validators.email]],
       country: [null, Validators.required],
       other_country: [null],
       city: [null, Validators.required],
+      sub_city: [null, Validators.required],
       other_city: [null],
-      education_affiliation: [null],
+      education_affiliation: [false],
     });
     this.getCenters();
   }
@@ -52,8 +54,15 @@ export class DataEntryComponent implements OnInit {
     this.dataEntryForm.reset();
     this.f.city.enable();
     this.f.gender.setValue('Male');
-    this.f.country.setValue('India');
-    this.f.city.setValue('Mumbai');
+    if (this.countries.length > 0) {
+      this.f.country.setValue('India');
+    }
+    if (this.centers.length > 0) {
+      this.f.city.setValue('Mumbai');
+      this.f.sub_city.reset();
+      this.f.sub_city.setValidators(Validators.required);
+      this.f.sub_city.updateValueAndValidity();
+    }
     this.f.education_affiliation.setValue(false);
     this.f.other_country.setValidators(null);
     this.f.other_city.setValidators(null);
@@ -81,11 +90,17 @@ export class DataEntryComponent implements OnInit {
     if (event && event.value === "Rest of India") {
       this.f.other_city.reset();
       this.f.other_city.setValidators(Validators.required);
+    } else if (event && event.value === "Mumbai") {
+      this.f.sub_city.reset();
+      this.f.sub_city.setValidators(Validators.required);
     } else {
       this.f.other_city.reset();
+      this.f.sub_city.reset();
       this.f.other_city.setValidators(null);
+      this.f.sub_city.setValidators(null);
     }
     this.f.other_city.updateValueAndValidity();
+    this.f.sub_city.updateValueAndValidity();
   }
 
   onChangeCountry(matSelectChange: MatSelectChange) {
@@ -99,8 +114,11 @@ export class DataEntryComponent implements OnInit {
       this.f.other_country.reset();
       this.f.city.reset();
       this.f.city.enable();
-      if (matSelectChange.value === 'India') {
+      if (matSelectChange.value === 'India' && this.centers.length > 0) {
         this.f.city.setValue('Mumbai');
+        this.f.sub_city.reset();
+        this.f.sub_city.setValidators(Validators.required);
+        this.f.sub_city.updateValueAndValidity();
       } else {
         this.ngSelectComponent.handleClearClick();
       }

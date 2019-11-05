@@ -38,7 +38,9 @@
         </div>
         <!-- / GENDER -->
 
-        <br>
+        <div>
+          <br>
+        </div>
 
         <!-- MOBILE -->
         <mat-form-field appearance="outline">
@@ -96,7 +98,9 @@
         </div>
         <!-- / CENTER -->
 
-        <br>
+        <div>
+          <br>
+        </div>
 
         <!-- OTHER-CITY -->
         <mat-form-field appearance="outline" *ngIf="f.city?.value === 'Rest of India'">
@@ -106,6 +110,19 @@
           <mat-icon matSuffix>location_city</mat-icon>
         </mat-form-field>
         <!-- / OTHER-CITY -->
+
+        <!-- SUB-CITY -->
+        <mat-form-field appearance="outline">
+          <mat-label>Sub center</mat-label>
+          <mat-select formControlName="sub_city" name="sub_city" required>
+            <mat-option *ngFor="let center of subcenters" [value]="center">
+              {{center}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="f.sub_city.errors?.required">Sub center is required</mat-error>
+          <mat-icon matSuffix>location_city</mat-icon>
+        </mat-form-field>
+        <!-- / SUB-CITY -->
 
         <!-- EDUCATION-AFFLIATION -->
         <div fxLayout="row" fxLayoutAlign="start center">
