@@ -112,7 +112,7 @@
         <!-- / OTHER-CITY -->
 
         <!-- SUB-CITY -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="f.city?.value === 'Mumbai'">
           <mat-label>Sub center</mat-label>
           <mat-select formControlName="sub_city" name="sub_city" required>
             <mat-option *ngFor="let center of subcenters" [value]="center">

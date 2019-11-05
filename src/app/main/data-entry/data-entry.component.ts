@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSelectChange } from '@angular/material';
 import { ApiService } from 'src/app/service';
@@ -131,7 +130,11 @@ export class DataEntryComponent implements OnInit {
   }
 
   initData(value: string) {
-    let centers = this.centerData[value];
+    let centers: any[] = this.centerData[value];
+    if (value == 'India') {
+      this.subcenters = centers[0]['Mumbai'];
+      centers = centers.shift();
+    }
     let obj_centers = [];
     for (let index = 0; index < centers.length; index++) {
       const element = centers[index];
@@ -149,6 +152,10 @@ export class DataEntryComponent implements OnInit {
         console.log('Form', this.dataEntryForm);
         const prepareData = this.dataEntryForm.value;
         prepareData.password = this._apiService.curruntUser.password;
+        if (prepareData.city == 'Mumbai') {
+          prepareData.city = prepareData.sub_city;
+          delete prepareData.sub_city;
+        }
         let result = await this._apiService.submitData(prepareData).toPromise();
         console.log("Submitted", result);
         this.reset();
