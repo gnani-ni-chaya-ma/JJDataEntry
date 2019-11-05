@@ -107,6 +107,9 @@ export class DataEntryComponent implements OnInit {
       this.f.other_country.reset();
       this.f.city.disable();
       this.f.city.setValue('Rest of India');
+      this.f.sub_city.reset();
+      this.f.sub_city.setValidators(null);
+      this.f.sub_city.updateValueAndValidity();
       this.f.other_country.setValidators(Validators.required);
       this.f.other_city.setValidators(Validators.required);
     } else {
@@ -130,10 +133,10 @@ export class DataEntryComponent implements OnInit {
   }
 
   initData(value: string) {
-    let centers: any[] = this.centerData[value];
+    let centers: any[] = [...this.centerData[value]];
     if (value == 'India') {
       this.subcenters = centers[0]['Mumbai'];
-      centers = centers.shift();
+      centers.shift();
     }
     let obj_centers = [];
     for (let index = 0; index < centers.length; index++) {
@@ -154,6 +157,20 @@ export class DataEntryComponent implements OnInit {
         prepareData.password = this._apiService.curruntUser.password;
         if (prepareData.city == 'Mumbai') {
           prepareData.city = prepareData.sub_city;
+          delete prepareData.sub_city;
+        }
+        if (prepareData.other_country == null) {
+          delete prepareData.other_country;
+        }
+        if (prepareData.other_city == null) {
+          delete prepareData.other_city;
+        } else {
+          prepareData.city = 'Rest of India';
+        }
+        if (prepareData.email == null) {
+          prepareData.email = "";
+        }
+        if (prepareData.sub_city == null) {
           delete prepareData.sub_city;
         }
         let result = await this._apiService.submitData(prepareData).toPromise();
