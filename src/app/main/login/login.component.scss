@@ -27,5 +27,11 @@
       }
     }
   }
+  
+  @media only screen and (max-width: 600px) {
+    mat-card { 
+      min-width: auto;
+    }
+  }
 
 }
